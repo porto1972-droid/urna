@@ -1,0 +1,1973 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0a0f1d">
+  <meta name="color-scheme" content="dark">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Urna">
+  <meta name="format-detection" content="telephone=no">
+  <title>Urna Eletrônica - EE Doroty David Muzel</title>
+  <style>
+    /* =========================================================================
+       RESET & BASE (SEM BLOQUEADORES DE TOQUE)
+       ========================================================================= */
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      margin: 0;
+      padding: 12px 8px;
+      background-color: #0a0f1d;
+      color: #ffffff;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* =========================================================================
+       BARRA SUPERIOR (HEADER)
+       ========================================================================= */
+    .top-bar {
+      width: 100%;
+      max-width: 960px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .brand-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-title {
+      color: #00e599;
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+    }
+
+    .brand-subtitle {
+      color: #94a3b8;
+      font-size: 11.5px;
+      font-weight: 500;
+      margin-top: 2px;
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-top {
+      background: #111a2e;
+      border: 1px solid #2a3a5b;
+      color: #e2e8f0;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      touch-action: manipulation;
+    }
+
+    .btn-top:active {
+      transform: scale(0.96);
+    }
+
+    .btn-mesario-top {
+      border-color: #f59e0b66;
+      color: #f8fafc;
+    }
+
+    .btn-download-top {
+      background: #0f766e;
+      border-color: #14b8a6;
+      color: #ffffff;
+    }
+
+    /* =========================================================================
+       GABINETE DA URNA ELETRÔNICA (IMAGEM 1)
+       ========================================================================= */
+    .urna-chassis {
+      background: linear-gradient(180deg, #d8dbe2 0%, #cbd0d9 100%);
+      border: 3px solid #adb3be;
+      border-radius: 18px;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.7), inset 0 2px 4px rgba(255, 255, 255, 0.85);
+      padding: 20px;
+      display: flex;
+      gap: 20px;
+      max-width: 960px;
+      width: 100%;
+    }
+
+    /* COLUNA DA ESQUERDA: TELA LCD */
+    .urna-screen-col {
+      flex: 1.35;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .screen-outer-frame {
+      background: #181d24;
+      border-radius: 10px;
+      padding: 8px;
+      box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.8), 0 2px 4px rgba(255, 255, 255, 0.4);
+      min-height: 420px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .screen-lcd {
+      background: #dfe9d4;
+      border: 2px solid #2b3027;
+      border-radius: 4px;
+      flex: 1;
+      padding: 16px 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      color: #172013;
+      box-shadow: inset 0 0 16px rgba(43, 48, 39, 0.15);
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .screen-header-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: #4a5444;
+      letter-spacing: 0.5px;
+    }
+
+    .screen-cargo-title {
+      font-size: 21px;
+      font-weight: 900;
+      color: #0b1108;
+      letter-spacing: 0.8px;
+      margin-top: 2px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid rgba(74, 84, 68, 0.35);
+    }
+
+    .screen-main-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-top: 14px;
+      flex-grow: 1;
+      gap: 10px;
+    }
+
+    .candidato-info-area {
+      flex: 1;
+    }
+
+    .row-numero {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .label-numero {
+      font-size: 13px;
+      font-weight: 800;
+      color: #111;
+    }
+
+    .digit-boxes {
+      display: flex;
+      gap: 5px;
+    }
+
+    .digit-box {
+      width: 34px;
+      height: 46px;
+      border: 2px solid #111;
+      background: #fbfdf9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      font-weight: 900;
+      color: #050505;
+      font-family: 'Courier New', Courier, monospace;
+    }
+
+    .digit-box.blinking {
+      animation: blinkCursor 0.9s infinite;
+    }
+
+    @keyframes blinkCursor {
+      0%, 49% { border-color: #000; background: #fff; }
+      50%, 100% { border-color: transparent; background: #dfe9d4; }
+    }
+
+    .label-section {
+      font-size: 10.5px;
+      font-weight: 800;
+      color: #4a5444;
+      margin-bottom: 2px;
+      text-transform: uppercase;
+    }
+
+    .candidato-nome {
+      font-size: 15.5px;
+      font-weight: 900;
+      color: #090e06;
+      margin-bottom: 6px;
+    }
+
+    .candidato-lider {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: #232c1e;
+      margin-bottom: 8px;
+    }
+
+    .slogan-box {
+      background: rgba(0, 0, 0, 0.05);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      border-radius: 4px;
+      padding: 6px 10px;
+      font-size: 11.5px;
+      font-style: italic;
+      color: #3b4436;
+      max-width: 290px;
+      line-height: 1.3;
+    }
+
+    .aviso-especial-voto {
+      font-size: 20px;
+      font-weight: 900;
+      margin-top: 18px;
+      color: #000;
+      line-height: 1.3;
+    }
+
+    /* BADGE DA CHAPA (IMAGEM 1) */
+    .avatar-photo-card {
+      width: 108px;
+      height: 130px;
+      border: 2px solid #586350;
+      background: #eff5ea;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 6px;
+      box-shadow: inset 0 0 6px rgba(0,0,0,0.1);
+    }
+
+    .avatar-circle-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: #00a868;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 8px;
+    }
+
+    .avatar-circle-icon svg {
+      width: 30px;
+      height: 30px;
+      fill: #ffffff;
+    }
+
+    .avatar-badge-text {
+      font-size: 10px;
+      font-weight: 900;
+      color: #172013;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      text-align: center;
+    }
+
+    .screen-footer-instructions {
+      border-top: 1px solid rgba(74, 84, 68, 0.4);
+      padding-top: 6px;
+      font-size: 10.5px;
+      line-height: 1.35;
+      color: #273121;
+    }
+
+    /* TELA FIM / VOTOU */
+    .screen-end-view {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      text-align: center;
+      flex-grow: 1;
+    }
+
+    .screen-end-view h1 {
+      font-size: 76px;
+      font-weight: 900;
+      color: #111;
+      letter-spacing: 6px;
+      font-family: 'Courier New', Courier, monospace;
+      margin: 0;
+    }
+
+    .screen-end-view .badge-votou {
+      font-size: 18px;
+      font-weight: 900;
+      color: #111;
+      letter-spacing: 2px;
+      border: 2px solid #111;
+      padding: 2px 18px;
+      margin-top: 8px;
+    }
+
+    /* =========================================================================
+       COLUNA DA DIREITA: TECLADO EMBUTIDO (IMAGEM 1)
+       ========================================================================= */
+    .urna-keypad-col {
+      flex: 1;
+      background: #f4f6fa;
+      border: 2px solid #bac0cb;
+      border-radius: 12px;
+      padding: 16px 14px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: inset 0 2px 5px rgba(255, 255, 255, 0.9), 0 3px 8px rgba(0,0,0,0.12);
+    }
+
+    .keypad-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #d1d5db;
+      padding-bottom: 8px;
+      margin-bottom: 12px;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .tse-brand-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .flag-emblem {
+      width: 24px;
+      height: 17px;
+      border-radius: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.25);
+    }
+
+    .flag-svg {
+      width: 24px;
+      height: 17px;
+    }
+
+    .tse-text-wrap {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .tse-title {
+      font-size: 11px;
+      font-weight: 900;
+      color: #1f2937;
+      letter-spacing: 0.6px;
+    }
+
+    .tse-sub {
+      font-size: 8.5px;
+      font-weight: 700;
+      color: #4b5563;
+      letter-spacing: 0.3px;
+    }
+
+    .ue-badge {
+      border: 1px solid #9ca3af;
+      border-radius: 4px;
+      font-size: 9.5px;
+      font-weight: 800;
+      color: #374151;
+      padding: 2px 6px;
+      background: #ffffff;
+    }
+
+    .keypad-numbers-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px 12px;
+      padding: 0 4px;
+    }
+
+    /* BOTÕES NUMÉRICOS 3D RESPONSIVOS */
+    .btn-num {
+      background: linear-gradient(180deg, #2c2d31 0%, #17181a 100%);
+      color: #ffffff;
+      font-size: 24px;
+      font-weight: 800;
+      border: 1px solid #000000;
+      border-radius: 7px;
+      height: 52px;
+      cursor: pointer;
+      box-shadow: 0 5px 0 #050505, 0 6px 6px rgba(0, 0, 0, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      touch-action: manipulation;
+      outline: none;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .btn-num:active {
+      transform: translateY(4px);
+      box-shadow: 0 1px 0 #050505;
+      background: #0d0e0f;
+    }
+
+    .btn-num[data-key="5"]::after {
+      content: "";
+      width: 4px;
+      height: 4px;
+      background: #8e94a0;
+      border-radius: 50%;
+      position: absolute;
+      bottom: 7px;
+    }
+
+    .grid-col-zero {
+      grid-column: 2;
+    }
+
+    /* BOTÕES DE AÇÃO */
+    .keypad-actions-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.05fr 1.15fr;
+      gap: 8px;
+      margin-top: 16px;
+      padding-top: 10px;
+      border-top: 1px solid #cbd5e1;
+      align-items: flex-end;
+    }
+
+    .btn-act {
+      border: 1px solid rgba(0, 0, 0, 0.3);
+      border-radius: 5px;
+      height: 44px;
+      font-weight: 900;
+      font-size: 11.5px;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      box-shadow: 0 3px 0 rgba(0, 0, 0, 0.35);
+      text-transform: uppercase;
+      touch-action: manipulation;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      outline: none;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .btn-act:active {
+      transform: translateY(2px);
+      box-shadow: 0 1px 0 rgba(0, 0, 0, 0.35);
+    }
+
+    .btn-act-branco {
+      background: #ffffff;
+      color: #111111;
+      border-color: #cbd5e1;
+    }
+
+    .btn-act-corrige {
+      background: #e66012;
+      color: #111111;
+      font-weight: 900;
+    }
+
+    .btn-act-confirma {
+      background: #1e944b;
+      color: #ffffff;
+      height: 52px;
+      font-size: 12.5px;
+    }
+
+    /* =========================================================================
+       MODAL DE APURAÇÃO & MESÁRIO (IMAGEM 2)
+       ========================================================================= */
+    .modal-overlay {
+      display: none; /* Inicia completamente oculto sem bloquear cliques */
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.85);
+      z-index: 99999;
+      justify-content: center;
+      align-items: center;
+      padding: 14px;
+      backdrop-filter: blur(4px);
+    }
+
+    .modal-window {
+      background: #0e1726;
+      border: 1px solid #1f2e4d;
+      border-radius: 12px;
+      max-width: 680px;
+      width: 100%;
+      max-height: 94vh;
+      overflow-y: auto;
+      padding: 20px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+      color: #e2e8f0;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .modal-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 1px solid #1a2744;
+      padding-bottom: 10px;
+    }
+
+    .modal-title-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .gold-bar-icon {
+      width: 32px;
+      height: 32px;
+      background: #1b263b;
+      border: 1px solid #f59e0b55;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .gold-bar-icon svg {
+      width: 18px;
+      height: 18px;
+      fill: #f59e0b;
+    }
+
+    .modal-title-text h2 {
+      font-size: 16.5px;
+      font-weight: 800;
+      color: #ffffff;
+      margin: 0;
+    }
+
+    .modal-title-text p {
+      font-size: 11px;
+      color: #94a3b8;
+      margin: 2px 0 0 0;
+    }
+
+    .btn-close-modal {
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+      font-size: 26px;
+      cursor: pointer;
+      line-height: 1;
+      padding: 2px 6px;
+      touch-action: manipulation;
+    }
+
+    /* 4 CARDS NO TOPO (IMAGEM 2) */
+    .stat-cards-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+
+    .stat-card {
+      background: #131d31;
+      border: 1px solid #1e2d4a;
+      border-radius: 8px;
+      padding: 10px 8px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .stat-card-title {
+      font-size: 9px;
+      font-weight: 800;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      line-height: 1.2;
+      min-height: 22px;
+    }
+
+    .stat-card-title.c10 { color: #00e599; }
+    .stat-card-title.c20 { color: #60a5fa; }
+
+    .stat-card-val {
+      font-size: 22px;
+      font-weight: 900;
+      color: #ffffff;
+      margin-top: 6px;
+    }
+
+    .stat-card-pct {
+      font-size: 11px;
+      color: #94a3b8;
+      font-weight: 600;
+      margin-top: 2px;
+    }
+
+    /* SITUAÇÃO ATUAL (IMAGEM 2) */
+    .lead-status-box {
+      background: #131d31;
+      border: 1px solid #1f2e4d;
+      border-radius: 8px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .lead-status-box .trophy-tag {
+      font-size: 12px;
+      font-weight: 800;
+      color: #f1f5f9;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .lead-status-box .status-lead-text {
+      font-size: 13px;
+      font-weight: 700;
+      color: #00e599;
+      line-height: 1.3;
+    }
+
+    /* DETALHAMENTO COM BARRAS DE PROGRESSO (IMAGEM 2) */
+    .detalhamento-container {
+      background: #131d31;
+      border: 1px solid #1f2e4d;
+      border-radius: 8px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .detalhamento-header {
+      font-size: 10px;
+      font-weight: 800;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+    }
+
+    .detalhe-item {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .detalhe-top-line {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .progress-track {
+      background: #090e1a;
+      border-radius: 999px;
+      height: 7px;
+      overflow: hidden;
+      width: 100%;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      border-radius: 999px;
+      transition: width 0.35s ease;
+    }
+
+    .fill-c10 { background: #00e599; }
+    .fill-c20 { background: #3b82f6; }
+    .fill-branco { background: #94a3b8; }
+    .fill-nulo { background: #64748b; }
+
+    /* CONSOLE RETRO BOLETIM DE URNA (IMAGEM 2) */
+    .bu-section-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .bu-label-main {
+      font-size: 11px;
+      font-weight: 800;
+      color: #cbd5e1;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .bu-live-sync {
+      font-size: 10px;
+      color: #64748b;
+      font-style: italic;
+    }
+
+    .terminal-bu-box {
+      background: #0a150f;
+      border: 1px solid #163824;
+      border-radius: 8px;
+      padding: 14px;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 12px;
+      color: #00ff88;
+      line-height: 1.42;
+      white-space: pre-wrap;
+      overflow-x: auto;
+      text-shadow: 0 0 4px rgba(0, 255, 136, 0.4);
+      max-height: 250px;
+    }
+
+    /* SANFONA DE PERSONALIZAÇÃO (IMAGEM 2) */
+    .accordion-toggle {
+      background: #131d31;
+      border: 1px solid #1e2d4a;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #cbd5e1;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      touch-action: manipulation;
+    }
+
+    .accordion-content {
+      display: none;
+      background: #111a2c;
+      border: 1px solid #1e2d4a;
+      border-top: none;
+      border-radius: 0 0 8px 8px;
+      padding: 14px;
+      margin-top: -6px;
+      gap: 12px;
+      flex-direction: column;
+    }
+
+    .edit-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .edit-chapa-block {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .edit-chapa-block label {
+      font-size: 11px;
+      font-weight: 800;
+      color: #00e599;
+    }
+
+    .edit-chapa-block.c20 label {
+      color: #60a5fa;
+    }
+
+    .edit-chapa-block input {
+      background: #0a0f1d;
+      border: 1px solid #283959;
+      color: #ffffff;
+      padding: 8px 10px;
+      border-radius: 5px;
+      font-size: 12px;
+    }
+
+    .btn-salvar-edicao {
+      background: #4f46e5;
+      color: #ffffff;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 5px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      align-self: flex-start;
+      touch-action: manipulation;
+    }
+
+    .modal-bottom-actions {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 4px;
+      flex-wrap: wrap;
+    }
+
+    .btn-modal-imprimir {
+      background: #d97706;
+      color: #ffffff;
+      border: none;
+      padding: 10px 14px;
+      border-radius: 6px;
+      font-size: 12.5px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      touch-action: manipulation;
+    }
+
+    .btn-modal-zerar {
+      background: #be123c;
+      color: #ffffff;
+      border: none;
+      padding: 10px 14px;
+      border-radius: 6px;
+      font-size: 12.5px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      touch-action: manipulation;
+    }
+
+    /* =========================================================================
+       RESPONSIVIDADE TOTAL (SMARTPHONE)
+       ========================================================================= */
+    @media (max-width: 860px) {
+      body {
+        padding: 6px;
+        justify-content: flex-start;
+      }
+      .top-bar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .top-actions {
+        justify-content: space-between;
+      }
+      .urna-chassis {
+        flex-direction: column;
+        padding: 12px;
+        gap: 12px;
+        border-radius: 14px;
+      }
+      .screen-outer-frame {
+        min-height: 320px;
+      }
+      .screen-cargo-title {
+        font-size: 18px;
+      }
+      .avatar-photo-card {
+        width: 95px;
+        height: 118px;
+      }
+      .avatar-circle-icon {
+        width: 48px;
+        height: 48px;
+      }
+      .avatar-circle-icon svg {
+        width: 26px;
+        height: 26px;
+      }
+      .urna-keypad-col {
+        padding: 14px 10px;
+      }
+      .btn-num {
+        height: 56px;
+        font-size: 26px;
+      }
+      .btn-act {
+        height: 48px;
+        font-size: 11px;
+      }
+      .btn-act-confirma {
+        height: 54px;
+        font-size: 12px;
+      }
+      .stat-cards-row {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .edit-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* =========================================================================
+       AJUSTES PARA CELULAR / TABLET
+       ========================================================================= */
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body { overscroll-behavior-y: none; touch-action: manipulation; }
+
+    /* Caixa de diálogo própria (substitui prompt/alert/confirm) */
+    .dlg-overlay { z-index: 100000; }
+    .dlg-box {
+      background: #0e1726; border: 1px solid #1f2e4d; border-radius: 12px;
+      width: 100%; max-width: 360px; padding: 18px; color: #e2e8f0;
+      display: flex; flex-direction: column; gap: 14px;
+      box-shadow: 0 20px 40px rgba(0,0,0,.8);
+    }
+    .dlg-msg { font-size: 14px; line-height: 1.45; font-weight: 600; }
+    .dlg-input {
+      background: #0a0f1d; border: 1px solid #283959; color: #fff;
+      padding: 10px 12px; border-radius: 6px; font-size: 16px; width: 100%;
+    }
+    .dlg-btns { display: flex; gap: 10px; justify-content: flex-end; }
+    .dlg-btn {
+      border: none; border-radius: 6px; padding: 11px 18px; font-size: 14px;
+      font-weight: 700; min-height: 44px; cursor: pointer; touch-action: manipulation;
+    }
+    .dlg-ok { background: #4f46e5; color: #fff; }
+    .dlg-cancel { background: #1b263b; color: #cbd5e1; border: 1px solid #2a3a5b; }
+
+    @media (max-width: 860px) {
+      body {
+        height: 100vh;
+        height: 100dvh;
+        padding: max(8px, env(safe-area-inset-top)) max(8px, env(safe-area-inset-right))
+                 max(8px, env(safe-area-inset-bottom)) max(8px, env(safe-area-inset-left));
+      }
+      /* Cabeçalho em uma linha só */
+      .top-bar { flex-direction: row; align-items: center; flex-wrap: nowrap; margin-bottom: 8px; }
+      .top-actions { gap: 6px; flex-shrink: 0; justify-content: flex-end; }
+      .btn-top { min-height: 40px; min-width: 40px; justify-content: center; padding: 8px 10px; }
+      .brand-title { font-size: 11.5px; line-height: 1.25; letter-spacing: .4px; }
+      .brand-subtitle { font-size: 10px; }
+
+      /* Tela ocupa o espaço livre; teclado fica sempre visível embaixo */
+      .urna-chassis { flex: 1 1 0; padding: 10px; gap: 10px; }
+      .urna-screen-col { flex: 1 1 0; min-height: 170px; }
+      .screen-outer-frame { flex: 1; min-height: 170px; padding: 6px; overflow: hidden; }
+      .screen-lcd { padding: 12px; overflow-y: auto; min-height: 0; }
+      .screen-cargo-title { font-size: 17px; }
+      .screen-main-content { margin-top: 10px; }
+      .row-numero { margin-bottom: 8px; }
+
+      .urna-keypad-col { flex: 0 0 auto; width: 100%; max-width: 440px; margin: 0 auto; padding: 10px; }
+      .keypad-header { margin-bottom: 8px; padding-bottom: 6px; }
+      .keypad-numbers-grid { gap: 8px 10px; }
+      .btn-num { height: clamp(42px, 7.4dvh, 58px); font-size: 24px; }
+      .keypad-actions-grid { margin-top: 10px; padding-top: 8px; }
+      .btn-act { height: clamp(40px, 6.4dvh, 50px); }
+      .btn-act-confirma { height: clamp(44px, 7dvh, 56px); }
+
+      /* Painel do mesário */
+      .modal-overlay {
+        padding: max(10px, env(safe-area-inset-top)) max(10px, env(safe-area-inset-right))
+                 max(10px, env(safe-area-inset-bottom)) max(10px, env(safe-area-inset-left));
+      }
+      .modal-window { max-height: 100%; padding: 14px; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
+      .btn-close-modal { min-width: 44px; min-height: 44px; font-size: 30px; }
+      .edit-chapa-block input { font-size: 16px; min-height: 42px; }
+      .terminal-bu-box { font-size: 11px; padding: 10px; max-height: 220px; overflow: auto; }
+      .modal-bottom-actions > button { flex: 1 1 100%; justify-content: center; min-height: 46px; }
+      .btn-salvar-edicao { min-height: 42px; align-self: stretch; }
+      .accordion-toggle { min-height: 44px; }
+      .lead-status-box { flex-wrap: wrap; }
+    }
+
+    @media (max-width: 520px) {
+      .lbl, .brand-subtitle { display: none; }
+    }
+
+    @media (max-width: 380px) {
+      .digit-box { width: 30px; height: 42px; font-size: 24px; }
+      .avatar-photo-card { width: 78px; height: 98px; }
+      .avatar-circle-icon { width: 38px; height: 38px; margin-bottom: 5px; }
+      .avatar-circle-icon svg { width: 20px; height: 20px; }
+      .candidato-nome { font-size: 14px; }
+      .candidato-lider { font-size: 12px; }
+      .aviso-especial-voto { font-size: 17px; }
+      .screen-end-view h1 { font-size: 60px; }
+      .tse-sub { display: none; }
+    }
+
+    /* Celulares de pouca altura (iPhone SE, Androids pequenos): tudo cabe sem rolar */
+    @media (max-width: 860px) and (max-height: 760px) {
+      body { padding-top: max(6px, env(safe-area-inset-top)); padding-bottom: max(6px, env(safe-area-inset-bottom)); }
+      .top-bar { margin-bottom: 6px; }
+      .btn-top { min-height: 38px; min-width: 38px; }
+      .urna-chassis { padding: 8px; gap: 8px; }
+      .keypad-header { display: none; }
+      .urna-keypad-col { padding: 8px; }
+      .keypad-numbers-grid { gap: 7px 10px; }
+      .btn-num { height: clamp(36px, 6.3dvh, 56px); font-size: 22px; box-shadow: 0 4px 0 #050505, 0 5px 5px rgba(0,0,0,.4); }
+      .keypad-actions-grid { margin-top: 9px; padding-top: 7px; }
+      .btn-act { height: clamp(36px, 6dvh, 48px); }
+      .btn-act-confirma { height: clamp(40px, 6.6dvh, 54px); }
+      .screen-lcd { padding: 8px 10px; }
+      .screen-cargo-title { font-size: 15px; padding-bottom: 4px; }
+      .screen-main-content { margin-top: 6px; }
+      .row-numero { margin-bottom: 6px; }
+      .digit-box { width: 30px; height: 40px; font-size: 24px; }
+      .candidato-nome { font-size: 14px; margin-bottom: 3px; }
+      .candidato-lider { font-size: 12px; margin-bottom: 5px; }
+      .slogan-box { font-size: 10.5px; padding: 4px 8px; }
+      .avatar-photo-card { width: 76px; height: 94px; }
+      .avatar-circle-icon { width: 38px; height: 38px; margin-bottom: 4px; }
+      .avatar-circle-icon svg { width: 20px; height: 20px; }
+      .aviso-especial-voto { font-size: 17px; margin-top: 10px; }
+      .screen-footer-instructions { font-size: 9.5px; line-height: 1.25; padding-top: 4px; }
+      .screen-end-view h1 { font-size: 56px; }
+    }
+
+    /* Celular deitado (paisagem): tela à esquerda, teclado à direita */
+    @media (orientation: landscape) and (max-height: 520px) {
+      body {
+        height: 100dvh;
+        padding: 4px max(8px, env(safe-area-inset-right)) 4px max(8px, env(safe-area-inset-left));
+      }
+      .top-bar { margin-bottom: 4px; }
+      .brand-subtitle { display: none; }
+      .btn-top { min-height: 34px; min-width: 34px; }
+      .urna-chassis { flex-direction: row; padding: 8px; gap: 10px; border-radius: 12px; }
+      .urna-screen-col { flex: 1.3; }
+      .screen-outer-frame { min-height: 0; }
+      .screen-lcd { padding: 8px 12px; }
+      .screen-main-content { margin-top: 6px; }
+      .screen-end-view h1 { font-size: 48px; }
+      .urna-keypad-col { flex: 1; max-width: none; margin: 0; padding: 8px; }
+      .keypad-header { display: none; }
+      .keypad-numbers-grid { gap: 6px 8px; }
+      .btn-num { height: clamp(30px, 10dvh, 40px); font-size: 20px; }
+      .keypad-actions-grid { margin-top: 8px; padding-top: 6px; }
+      .btn-act { height: clamp(30px, 9dvh, 38px); }
+      .btn-act-confirma { height: clamp(34px, 10dvh, 42px); }
+    }
+
+    @media print {
+      body * {
+        visibility: hidden !important;
+      }
+      #buTextoTerminal, #buTextoTerminal * {
+        visibility: visible !important;
+      }
+      #buTextoTerminal {
+        position: absolute !important;
+        left: 0 !important;
+        top: 0 !important;
+        width: 100% !important;
+        background: #ffffff !important;
+        color: #000000 !important;
+        border: none !important;
+        text-shadow: none !important;
+        font-size: 11pt !important;
+        max-height: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="jsAviso" style="background:#b91c1c;color:#fff;padding:12px 14px;border-radius:8px;margin:0 0 10px;font:600 14px/1.4 sans-serif;max-width:960px;width:100%;text-align:center">
+    ⚠ A urna não está funcionando neste visualizador (o JavaScript está bloqueado).<br>
+    Abra este arquivo no <b>Chrome</b> (Android) ou no <b>Safari</b> (iPhone), e não pela prévia do WhatsApp, e-mail ou gerenciador de arquivos.
+  </div>
+
+  <!-- BARRA SUPERIOR (HEADER) -->
+  <header class="top-bar">
+    <div class="brand-group">
+      <div class="brand-title">ESCOLA ESTADUAL DOROTY DAVID MUZEL</div>
+      <div class="brand-subtitle">Eleição Oficial do Grêmio Estudantil • Sistema Eletrônico</div>
+    </div>
+    <div class="top-actions">
+      <button type="button" class="btn-top btn-mesario-top" onclick="solicitarAcessoMesario()" title="Abrir Painel de Apuração e Boletim" aria-label="Apuração e mesário">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="#f59e0b"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"></path></svg>
+        <span class="lbl">Apuração / Mesário</span>
+      </button>
+      <button type="button" class="btn-top" onclick="alternarAudio()" title="Ligar/Desligar Som" aria-label="Ligar ou desligar o som">
+        <svg id="svgSoundIcon" viewBox="0 0 24 24" width="14" height="14" fill="#00e599"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"></path></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- GABINETE DA URNA ELETRÔNICA (IMAGEM 1) -->
+  <main class="urna-chassis">
+
+    <!-- TELA LCD (LADO ESQUERDO) -->
+    <div class="urna-screen-col">
+      <div class="screen-outer-frame">
+        <div class="screen-lcd" id="screenLcd">
+
+          <!-- FLUXO NORMAL DE VOTAÇÃO -->
+          <div id="screenNormalFlow" style="display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
+            <div>
+              <div class="screen-header-label">SEU VOTO PARA</div>
+              <div class="screen-cargo-title">GRÊMIO ESTUDANTIL</div>
+
+              <div class="screen-main-content">
+                <div class="candidato-info-area">
+                  <div class="row-numero">
+                    <span class="label-numero">NÚMERO:</span>
+                    <div class="digit-boxes">
+                      <div class="digit-box blinking" id="d1Box"></div>
+                      <div class="digit-box" id="d2Box"></div>
+                    </div>
+                  </div>
+
+                  <!-- Detalhes da Chapa -->
+                  <div id="candidatoInfoBloco" style="display: none;">
+                    <div class="label-section">NOME:</div>
+                    <div class="candidato-nome" id="viewNomeChapa">Chapa 10 - Escola Feliz Aluno Feliz</div>
+
+                    <div class="label-section">LIDERANÇAS:</div>
+                    <div class="candidato-lider" id="viewLideres">Pres: Maria Helena Camargo</div>
+
+                    <div class="slogan-box" id="viewSlogan">
+                      "Por uma escola acolhedora, ativa e com voz para todos!"
+                    </div>
+                  </div>
+
+                  <!-- Aviso de Branco ou Nulo -->
+                  <div id="avisoEspecialTela" class="aviso-especial-voto" style="display: none;"></div>
+                </div>
+
+                <!-- Avatar Circular da Chapa -->
+                <div class="avatar-photo-card" id="viewAvatarCard" style="display: none;">
+                  <div class="avatar-circle-icon" id="avatarCircleBg">
+                    <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"></path></svg>
+                  </div>
+                  <div class="avatar-badge-text" id="avatarBadge">VOZ ATIVA</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Rodapé com instruções -->
+            <div class="screen-footer-instructions" id="footerInstrucoes" style="display: none;">
+              Aperte a tecla:<br>
+              <strong>CONFIRMA</strong> para CONFIRMAR este voto<br>
+              <strong>CORRIGE</strong> para REINICIAR este voto
+            </div>
+          </div>
+
+          <!-- TELA FIM / VOTOU -->
+          <div class="screen-end-view" id="screenEndView">
+            <h1>FIM</h1>
+            <div class="badge-votou">VOTOU</div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- TECLADO FÍSICO EMBUTIDO (LADO DIREITO - IMAGEM 1) -->
+    <div class="urna-keypad-col">
+      <div class="keypad-header">
+        <div class="tse-brand-group">
+          <div class="flag-emblem">
+            <svg class="flag-svg" viewBox="0 0 720 504">
+              <rect width="720" height="504" fill="#009c3b"></rect>
+              <polygon points="360,37.8 667.8,252 360,466.2 52.2,252" fill="#ffdf00"></polygon>
+              <circle cx="360" cy="252" r="126" fill="#002776"></circle>
+              <path d="M 234 252 A 126 126 0 0 1 486 252" stroke="#ffffff" stroke-width="12" fill="none"></path>
+            </svg>
+          </div>
+          <div class="tse-text-wrap">
+            <span class="tse-title">JUSTIÇA ELEITORAL</span>
+            <span class="tse-sub">ELEIÇÃO DO GRÊMIO ESTUDANTIL</span>
+          </div>
+        </div>
+        <div class="ue-badge">UE-2026</div>
+      </div>
+
+      <!-- TECLAS NUMÉRICAS COM ONCLICK PURO E DIRETO -->
+      <div class="keypad-numbers-grid">
+        <button type="button" class="btn-num" onclick="digitarNumero('1')">1</button>
+        <button type="button" class="btn-num" onclick="digitarNumero('2')">2</button>
+        <button type="button" class="btn-num" onclick="digitarNumero('3')">3</button>
+        <button type="button" class="btn-num" onclick="digitarNumero('4')">4</button>
+        <button type="button" class="btn-num" data-key="5" onclick="digitarNumero('5')">5</button>
+        <button type="button" class="btn-num" onclick="digitarNumero('6')">6</button>
+        <button type="button" class="btn-num" onclick="digitarNumero('7')">7</button>
+        <button type="button" class="btn-num" onclick="digitarNumero('8')">8</button>
+        <button type="button" class="btn-num" onclick="digitarNumero('9')">9</button>
+        <div class="grid-col-zero">
+          <button type="button" class="btn-num" style="width: 100%;" onclick="digitarNumero('0')">0</button>
+        </div>
+      </div>
+
+      <!-- BOTÕES DE COMANDO -->
+      <div class="keypad-actions-grid">
+        <button type="button" class="btn-act btn-act-branco" onclick="votarBranco()">BRANCO</button>
+        <button type="button" class="btn-act btn-act-corrige" onclick="corrigirVoto()">CORRIGE</button>
+        <button type="button" class="btn-act btn-act-confirma" onclick="confirmarVoto()">CONFIRMA</button>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- MODAL DE APURAÇÃO & MESÁRIO (IMAGEM 2) -->
+  <div class="modal-overlay" id="modalMesario">
+    <div class="modal-window">
+      
+      <div class="modal-header-row">
+        <div class="modal-title-group">
+          <div class="gold-bar-icon">
+            <svg viewBox="0 0 24 24"><path d="M5 9.2h3V19H5zM10.6 5h2.8v14h-2.8zm5.6 8H19v6h-2.8z"></path></svg>
+          </div>
+          <div class="modal-title-text">
+            <h2>Painel de Apuração &amp; Mesário</h2>
+            <p>Escola Estadual Doroty David Muzel</p>
+          </div>
+        </div>
+        <button type="button" class="btn-close-modal" onclick="fecharModalMesario()">×</button>
+      </div>
+
+      <!-- 4 CARDS NO TOPO (IMAGEM 2) -->
+      <div class="stat-cards-row">
+        <div class="stat-card">
+          <div class="stat-card-title">TOTAL DE VOTOS</div>
+          <div class="stat-card-val" id="cardTotalVotos">0</div>
+          <div class="stat-card-pct">100%</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-title c10" id="cardC10Title">CHAPA 10 - ESCOLA FELIZ ALUNO FELIZ</div>
+          <div class="stat-card-val" id="cardC10Votos">0</div>
+          <div class="stat-card-pct" id="cardC10Pct">0.0%</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-title c20" id="cardC20Title">CHAPA 20 - JUNTOS SOMOS MELHORES</div>
+          <div class="stat-card-val" id="cardC20Votos">0</div>
+          <div class="stat-card-pct" id="cardC20Pct">0.0%</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-title">BRANCOS / NULOS</div>
+          <div class="stat-card-val" id="cardBrancoNuloVotos">0</div>
+          <div class="stat-card-pct" id="cardBrancoNuloPct">0.0%</div>
+        </div>
+      </div>
+
+      <!-- SITUAÇÃO ATUAL (IMAGEM 2) -->
+      <div class="lead-status-box">
+        <div class="trophy-tag">🏆 Situação atual:</div>
+        <div class="status-lead-text" id="statusLeadText">
+          Aguardando o início da votação. Urna pronta.
+        </div>
+      </div>
+
+      <!-- DETALHAMENTO COM BARRAS DE PROGRESSO (IMAGEM 2) -->
+      <div class="detalhamento-container">
+        <div class="detalhamento-header">DETALHAMENTO DOS VOTOS</div>
+
+        <div class="detalhe-item">
+          <div class="detalhe-top-line">
+            <span id="barC10Label">Chapa 10 - Escola Feliz Aluno Feliz</span>
+            <span id="barC10Score">0 votos (0.0%)</span>
+          </div>
+          <div class="progress-track">
+            <div class="progress-bar-fill fill-c10" id="barC10Fill" style="width: 0%;"></div>
+          </div>
+        </div>
+
+        <div class="detalhe-item">
+          <div class="detalhe-top-line">
+            <span id="barC20Label">Chapa 20 - Juntos Somos Melhores</span>
+            <span id="barC20Score">0 votos (0.0%)</span>
+          </div>
+          <div class="progress-track">
+            <div class="progress-bar-fill fill-c20" id="barC20Fill" style="width: 0%;"></div>
+          </div>
+        </div>
+
+        <div class="detalhe-item">
+          <div class="detalhe-top-line">
+            <span>Votos em Branco</span>
+            <span id="barBrancoScore">0 votos (0.0%)</span>
+          </div>
+          <div class="progress-track">
+            <div class="progress-bar-fill fill-branco" id="barBrancoFill" style="width: 0%;"></div>
+          </div>
+        </div>
+
+        <div class="detalhe-item">
+          <div class="detalhe-top-line">
+            <span>Votos Nulos</span>
+            <span id="barNuloScore">0 votos (0.0%)</span>
+          </div>
+          <div class="progress-track">
+            <div class="progress-bar-fill fill-nulo" id="barNuloFill" style="width: 0%;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BOLETIM DE URNA (BU) CONSOLE RETRO (IMAGEM 2) -->
+      <div>
+        <div class="bu-section-title-row">
+          <span class="bu-label-main">📄 BOLETIM DE URNA (BU) - VISUALIZAÇÃO OFICIAL:</span>
+          <span class="bu-live-sync">Atualizado em tempo real</span>
+        </div>
+        <div class="terminal-bu-box" id="buTextoTerminal">Carregando boletim...</div>
+      </div>
+
+      <!-- SANFONA DE PERSONALIZAÇÃO (IMAGEM 2) -->
+      <div>
+        <div class="accordion-toggle" onclick="alternarAccordion()">
+          <span>⚙ Personalizar nomes e integrantes das chapas</span>
+          <span id="accArrow">▼</span>
+        </div>
+        <div class="accordion-content" id="accContent">
+          <div class="edit-grid">
+            <div class="edit-chapa-block">
+              <label>Chapa 10</label>
+              <input type="text" id="editNomeC10" value="Chapa 10 - Escola Feliz Aluno Feliz">
+              <input type="text" id="editPresC10" value="Pres: Maria Helena Camargo">
+              <input type="text" id="editSloganC10" value="Por uma escola acolhedora, ativa e com voz para todos!">
+            </div>
+            <div class="edit-chapa-block c20">
+              <label>Chapa 20</label>
+              <input type="text" id="editNomeC20" value="Chapa 20 - Juntos Somos Melhores">
+              <input type="text" id="editPresC20" value="Pres: João Daniel">
+              <input type="text" id="editSloganC20" value="Inovação, união e projetos para toda a comunidade escolar!">
+            </div>
+          </div>
+          <button type="button" class="btn-salvar-edicao" onclick="salvarPersonalizacao()">Salvar Alterações</button>
+        </div>
+      </div>
+
+      <!-- LINK DO ARQUIVO NO GOOGLE DRIVE -->
+      <a href="https://drive.google.com/file/d/1ZouE_zc-SmpWNSLkXTlmFoDgBgjn2TrH/view?usp=drive_link" target="_blank" rel="noopener noreferrer" style="display:flex;align-items:center;justify-content:center;gap:6px;background:#1b263b;border:1px solid #2a3a5b;color:#e2e8f0;text-decoration:none;padding:12px 14px;border-radius:6px;font:700 12.5px sans-serif;min-height:46px;touch-action:manipulation">☁ Abrir arquivo no Google Drive</a>
+
+      <!-- BOTÕES INFERIORES -->
+      <div class="modal-bottom-actions">
+        <button type="button" class="btn-modal-imprimir" onclick="window.print()">
+          🖨 Imprimir Boletim de Urna (BU)
+        </button>
+        <button type="button" class="btn-modal-zerar" onclick="zerarUrnaSegura()">
+          🗑 Zerar Urna (Zerésima)
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- CAIXA DE DIÁLOGO (substitui prompt/alert/confirm, que falham em muitos celulares) -->
+  <div class="modal-overlay dlg-overlay" id="dlg" role="dialog" aria-modal="true">
+    <div class="dlg-box">
+      <div class="dlg-msg" id="dlgMsg"></div>
+      <input class="dlg-input" id="dlgInput" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" style="display:none">
+      <div class="dlg-btns">
+        <button type="button" class="dlg-btn dlg-cancel" id="dlgCancel">Cancelar</button>
+        <button type="button" class="dlg-btn dlg-ok" id="dlgOk">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("jsAviso").style.display = "none";
+    /* =========================================================================
+       0. UTILITÁRIOS PARA CELULAR (diálogo, vibração, tela sempre ligada)
+       ========================================================================= */
+    let dialogoAberto = false;
+    function dialogo(msg, opts = {}) {
+      const { input = false, password = false, cancel = false } = opts;
+      return new Promise(resolve => {
+        const ov = document.getElementById("dlg");
+        const inp = document.getElementById("dlgInput");
+        const ok = document.getElementById("dlgOk");
+        const ca = document.getElementById("dlgCancel");
+        document.getElementById("dlgMsg").textContent = msg;
+        inp.style.display = input ? "block" : "none";
+        inp.type = password ? "password" : "text";
+        inp.inputMode = password ? "numeric" : "text";
+        inp.value = "";
+        ca.style.display = cancel ? "inline-block" : "none";
+        ov.style.display = "flex";
+        dialogoAberto = true;
+        const fechar = (val) => {
+          ov.style.display = "none";
+          dialogoAberto = false;
+          ok.onclick = ca.onclick = inp.onkeydown = null;
+          resolve(val);
+        };
+        ok.onclick = () => fechar(input ? inp.value : true);
+        ca.onclick = () => fechar(input ? null : false);
+        inp.onkeydown = (e) => { if (e.key === "Enter") { e.preventDefault(); ok.onclick(); } };
+        setTimeout(() => (input ? inp : ok).focus(), 50);
+      });
+    }
+
+    function vibrar(padrao) {
+      try { if (navigator.vibrate) navigator.vibrate(padrao); } catch (e) {}
+    }
+
+    let wakeLock = null;
+    async function manterTelaLigada() {
+      try {
+        if ("wakeLock" in navigator && !wakeLock) {
+          wakeLock = await navigator.wakeLock.request("screen");
+          wakeLock.addEventListener("release", () => { wakeLock = null; });
+        }
+      } catch (e) {}
+    }
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "visible") manterTelaLigada();
+    });
+    window.addEventListener("pointerdown", manterTelaLigada, { once: true });
+
+
+    /* =========================================================================
+       1. DADOS E CONFIGURAÇÃO
+       ========================================================================= */
+    const STORAGE_KEY_CONFIG = "urna_doroty_config_final";
+    const STORAGE_KEY_VOTOS = "urna_doroty_votos_final";
+
+    let chapas = {
+      "10": {
+        nome: "Chapa 10 - Escola Feliz Aluno Feliz",
+        lideranca: "Pres: Maria Helena Camargo",
+        slogan: '"Por uma escola acolhedora, ativa e com voz para todos!"',
+        badge: "VOZ ATIVA",
+        corAvatar: "#00a868"
+      },
+      "20": {
+        nome: "Chapa 20 - Juntos Somos Melhores",
+        lideranca: "Pres: João Daniel",
+        slogan: '"Inovação, união e projetos para toda a comunidade escolar!"',
+        badge: "UNIÃO",
+        corAvatar: "#2563eb"
+      }
+    };
+
+    function carregarConfiguracao() {
+      try {
+        const salvo = localStorage.getItem(STORAGE_KEY_CONFIG);
+        if (salvo) {
+          const cfg = JSON.parse(salvo);
+          chapas["10"].nome = cfg.c10Nome || chapas["10"].nome;
+          chapas["10"].lideranca = cfg.c10Pres || chapas["10"].lideranca;
+          chapas["10"].slogan = cfg.c10Slogan || chapas["10"].slogan;
+          chapas["20"].nome = cfg.c20Nome || chapas["20"].nome;
+          chapas["20"].lideranca = cfg.c20Pres || chapas["20"].lideranca;
+          chapas["20"].slogan = cfg.c20Slogan || chapas["20"].slogan;
+        }
+      } catch (e) {}
+    }
+
+    let numeroDigitado = "";
+    let isBranco = false;
+    let etapaVoto = "DIGITANDO";
+    let audioHabilitado = true;
+
+    /* =========================================================================
+       2. SÍNTESE DE ÁUDIO 100% ISOLADA EM TRY/CATCH (NUNCA TRAVA O TOQUE)
+       ========================================================================= */
+    let audioCtx = null;
+
+    function getAudioCtx() {
+      try {
+        if (!audioCtx) {
+          const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+          if (AudioContextClass) audioCtx = new AudioContextClass();
+        }
+        if (audioCtx && audioCtx.state === 'suspended') {
+          audioCtx.resume().catch(() => {});
+        }
+      } catch (e) {}
+      return audioCtx;
+    }
+
+    function somBipTeclado() {
+      if (!audioHabilitado) return;
+      vibrar(12);
+      try {
+        const ctx = getAudioCtx();
+        if (!ctx) return;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(1050, ctx.currentTime);
+        gain.gain.setValueAtTime(0.18, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.08);
+      } catch (e) {}
+    }
+
+    function somUrnaFim() {
+      if (!audioHabilitado) return;
+      vibrar([60, 40, 60, 40, 220]);
+      try {
+        const ctx = getAudioCtx();
+        if (!ctx) return;
+        const t0 = ctx.currentTime;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc.type = "sine";
+        gain.gain.setValueAtTime(0.24, t0);
+
+        osc.frequency.setValueAtTime(698.46, t0);
+        osc.frequency.setValueAtTime(880.00, t0 + 0.12);
+        osc.frequency.setValueAtTime(1046.50, t0 + 0.24);
+        osc.frequency.setValueAtTime(1396.91, t0 + 0.36);
+        osc.frequency.setValueAtTime(880.00, t0 + 0.50);
+
+        gain.gain.setValueAtTime(0.24, t0 + 0.50);
+        gain.gain.exponentialRampToValueAtTime(0.001, t0 + 1.25);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.start(t0);
+        osc.stop(t0 + 1.25);
+      } catch (e) {}
+    }
+
+    function alternarAudio() {
+      audioHabilitado = !audioHabilitado;
+      const icon = document.getElementById("svgSoundIcon");
+      if (audioHabilitado) {
+        icon.setAttribute("fill", "#00e599");
+        somBipTeclado();
+      } else {
+        icon.setAttribute("fill", "#64748b");
+      }
+    }
+
+    /* =========================================================================
+       3. FLUXO DE VOTAÇÃO
+       ========================================================================= */
+    function digitarNumero(n) {
+      if (etapaVoto === "FIM" || isBranco) return;
+      somBipTeclado();
+
+      if (numeroDigitado.length < 2) {
+        numeroDigitado += n;
+        renderizarTela();
+      }
+    }
+
+    function votarBranco() {
+      if (etapaVoto === "FIM") return;
+      somBipTeclado();
+
+      numeroDigitado = "";
+      isBranco = true;
+      etapaVoto = "CONFIRMACAO";
+      renderizarTela();
+    }
+
+    function corrigirVoto() {
+      if (etapaVoto === "FIM") return;
+      somBipTeclado();
+
+      numeroDigitado = "";
+      isBranco = false;
+      etapaVoto = "DIGITANDO";
+      renderizarTela();
+    }
+
+    function renderizarTela() {
+      const d1 = document.getElementById("d1Box");
+      const d2 = document.getElementById("d2Box");
+      const infoBloco = document.getElementById("candidatoInfoBloco");
+      const avisoEspecial = document.getElementById("avisoEspecialTela");
+      const avatarCard = document.getElementById("viewAvatarCard");
+      const footerInstrucoes = document.getElementById("footerInstrucoes");
+
+      d1.innerText = numeroDigitado[0] || "";
+      d2.innerText = numeroDigitado[1] || "";
+
+      infoBloco.style.display = "none";
+      avisoEspecial.style.display = "none";
+      avatarCard.style.display = "none";
+      footerInstrucoes.style.display = "none";
+
+      if (numeroDigitado.length === 0) {
+        d1.classList.add("blinking");
+        d2.classList.remove("blinking");
+      } else if (numeroDigitado.length === 1) {
+        d1.classList.remove("blinking");
+        d2.classList.add("blinking");
+      } else {
+        d1.classList.remove("blinking");
+        d2.classList.remove("blinking");
+      }
+
+      if (isBranco) {
+        d1.classList.remove("blinking");
+        d2.classList.remove("blinking");
+        avisoEspecial.innerText = "VOTO EM BRANCO";
+        avisoEspecial.style.display = "block";
+        footerInstrucoes.style.display = "block";
+        return;
+      }
+
+      if (numeroDigitado.length === 2) {
+        etapaVoto = "CONFIRMACAO";
+        footerInstrucoes.style.display = "block";
+
+        if (chapas[numeroDigitado]) {
+          const c = chapas[numeroDigitado];
+          document.getElementById("viewNomeChapa").innerText = c.nome;
+          document.getElementById("viewLideres").innerText = c.lideranca;
+          document.getElementById("viewSlogan").innerText = c.slogan;
+          document.getElementById("avatarCircleBg").style.background = c.corAvatar;
+          document.getElementById("avatarBadge").innerText = c.badge;
+
+          infoBloco.style.display = "block";
+          avatarCard.style.display = "flex";
+        } else {
+          avisoEspecial.innerHTML = "NÚMERO ERRADO<br><span style='font-size:15px;'>VOTO NULO</span>";
+          avisoEspecial.style.display = "block";
+        }
+      } else {
+        etapaVoto = "DIGITANDO";
+      }
+    }
+
+    function confirmarVoto() {
+      if (etapaVoto !== "CONFIRMACAO") return;
+
+      let tipoVoto = "";
+      if (isBranco) {
+        tipoVoto = "BRANCO";
+      } else if (chapas[numeroDigitado]) {
+        tipoVoto = numeroDigitado;
+      } else {
+        tipoVoto = "NULO";
+      }
+
+      salvarVotoLocal(tipoVoto);
+      somUrnaFim();
+
+      document.getElementById("screenNormalFlow").style.display = "none";
+      document.getElementById("screenEndView").style.display = "flex";
+      etapaVoto = "FIM";
+
+      setTimeout(() => {
+        reiniciarUrna();
+      }, 3300);
+    }
+
+    function reiniciarUrna() {
+      numeroDigitado = "";
+      isBranco = false;
+      etapaVoto = "DIGITANDO";
+      document.getElementById("screenEndView").style.display = "none";
+      document.getElementById("screenNormalFlow").style.display = "flex";
+      renderizarTela();
+    }
+
+    /* =========================================================================
+       4. PERSISTÊNCIA DOS VOTOS
+       ========================================================================= */
+    let votosMemoria = null;   // reserva caso o navegador bloqueie o localStorage
+    let avisouSemArmazenamento = false;
+
+    function getVotosLocal() {
+      try {
+        const d = localStorage.getItem(STORAGE_KEY_VOTOS);
+        if (d) return JSON.parse(d);
+      } catch (e) {}
+      if (votosMemoria) return votosMemoria;
+      return { "10": 0, "20": 0, "BRANCO": 0, "NULO": 0, "TOTAL": 0 };
+    }
+
+    function salvarVotoLocal(tipo) {
+      const v = getVotosLocal();
+      v[tipo] = (v[tipo] || 0) + 1;
+      v["TOTAL"] = (v["TOTAL"] || 0) + 1;
+      votosMemoria = v;
+      try {
+        localStorage.setItem(STORAGE_KEY_VOTOS, JSON.stringify(v));
+      } catch (e) {
+        if (!avisouSemArmazenamento) {
+          avisouSemArmazenamento = true;
+          setTimeout(() => dialogo("Atenção: este navegador bloqueou o armazenamento. Os votos só são contados enquanto esta página ficar aberta. Abra a urna no Chrome ou Safari para salvar de forma permanente."), 3600);
+        }
+      }
+    }
+
+    /* =========================================================================
+       5. PAINEL DO MESÁRIO & BOLETIM DE URNA (IMAGEM 2)
+       ========================================================================= */
+    async function solicitarAcessoMesario() {
+      if (dialogoAberto) return;
+      const pin = await dialogo("Informe a senha do mesário (Padrão: 1234):", { input: true, password: true, cancel: true });
+      if (pin !== "1234") {
+        if (pin !== null) await dialogo("Senha incorreta!");
+        return;
+      }
+      atualizarPainelMesario();
+      document.getElementById("modalMesario").style.display = "flex";
+    }
+
+    function fecharModalMesario() {
+      document.getElementById("modalMesario").style.display = "none";
+    }
+
+    function atualizarPainelMesario() {
+      const v = getVotosLocal();
+      const total = v.TOTAL || 0;
+
+      const calcPct = (qtd) => total > 0 ? ((qtd / total) * 100) : 0;
+      const calcPctStr = (qtd) => calcPct(qtd).toFixed(1) + "%";
+
+      const v10 = v["10"] || 0;
+      const v20 = v["20"] || 0;
+      const vBranco = v["BRANCO"] || 0;
+      const vNulo = v["NULO"] || 0;
+
+      // Cards no topo
+      document.getElementById("cardTotalVotos").innerText = total;
+      document.getElementById("cardC10Title").innerText = chapas["10"].nome.toUpperCase();
+      document.getElementById("cardC10Votos").innerText = v10;
+      document.getElementById("cardC10Pct").innerText = calcPctStr(v10);
+
+      document.getElementById("cardC20Title").innerText = chapas["20"].nome.toUpperCase();
+      document.getElementById("cardC20Votos").innerText = v20;
+      document.getElementById("cardC20Pct").innerText = calcPctStr(v20);
+
+      document.getElementById("cardBrancoNuloVotos").innerText = (vBranco + vNulo);
+      document.getElementById("cardBrancoNuloPct").innerText = calcPctStr(vBranco + vNulo);
+
+      // Status
+      const leadElem = document.getElementById("statusLeadText");
+      if (total === 0) {
+        leadElem.innerText = "Aguardando votos. Urna em estado de Zerésima.";
+        leadElem.style.color = "#94a3b8";
+      } else if (v10 > v20) {
+        leadElem.innerText = `${chapas["10"].nome} está liderando com ${calcPctStr(v10)} dos votos!`;
+        leadElem.style.color = "#00e599";
+      } else if (v20 > v10) {
+        leadElem.innerText = `${chapas["20"].nome} está liderando com ${calcPctStr(v20)} dos votos!`;
+        leadElem.style.color = "#60a5fa";
+      } else {
+        leadElem.innerText = `Empate técnico entre as duas chapas com ${v10} votos (${calcPctStr(v10)}) cada!`;
+        leadElem.style.color = "#fbbf24";
+      }
+
+      // Barras de Progresso
+      document.getElementById("barC10Label").innerText = chapas["10"].nome;
+      document.getElementById("barC10Score").innerText = `${v10} votos (${calcPctStr(v10)})`;
+      document.getElementById("barC10Fill").style.width = calcPct(v10) + "%";
+
+      document.getElementById("barC20Label").innerText = chapas["20"].nome;
+      document.getElementById("barC20Score").innerText = `${v20} votos (${calcPctStr(v20)})`;
+      document.getElementById("barC20Fill").style.width = calcPct(v20) + "%";
+
+      document.getElementById("barBrancoScore").innerText = `${vBranco} votos (${calcPctStr(vBranco)})`;
+      document.getElementById("barBrancoFill").style.width = calcPct(vBranco) + "%";
+
+      document.getElementById("barNuloScore").innerText = `${vNulo} votos (${calcPctStr(vNulo)})`;
+      document.getElementById("barNuloFill").style.width = calcPct(vNulo) + "%";
+
+      // Console Terminal BU
+      const now = new Date();
+      const dataStr = now.toLocaleDateString("pt-BR");
+      const horaStr = now.toLocaleTimeString("pt-BR");
+
+      let situacaoBU = "SEM VOTOS COMPUTADOS";
+      if (total > 0) {
+        if (v10 > v20) situacaoBU = `ELEITA: ${chapas["10"].nome.toUpperCase()}`;
+        else if (v20 > v10) situacaoBU = `ELEITA: ${chapas["20"].nome.toUpperCase()}`;
+        else situacaoBU = "EMPATE TÉCNICO ENTRE AS CHAPAS";
+      }
+
+      const buTexto = 
+`********************************************************
+             JUSTIÇA ELEITORAL ESCOLAR                  
+               BOLETIM DE URNA (BU)                     
+********************************************************
+ESTABELECIMENTO : ESCOLA ESTADUAL DOROTY DAVID MUZEL
+ELEIÇÃO         : GRÊMIO ESTUDANTIL
+DATA EMISSÃO    : ${dataStr} - ${horaStr}
+MUNICÍPIO / UF  : SÃO PAULO - SP
+SEÇÃO / URNA    : 001 - TURNO ÚNICO
+--------------------------------------------------------
+CANDIDATOS / CHAPAS REGISTRADAS:
+[10] ${chapas["10"].nome.toUpperCase()}
+[20] ${chapas["20"].nome.toUpperCase()}
+--------------------------------------------------------
+VOTAÇÃO APURADA:
+CHAPA 10 ..........: ${String(v10).padStart(4, " ")} votos (${calcPctStr(v10).padStart(6, " ")})
+CHAPA 20 ..........: ${String(v20).padStart(4, " ")} votos (${calcPctStr(v20).padStart(6, " ")})
+VOTOS EM BRANCO ...: ${String(vBranco).padStart(4, " ")} votos (${calcPctStr(vBranco).padStart(6, " ")})
+VOTOS NULOS .......: ${String(vNulo).padStart(4, " ")} votos (${calcPctStr(vNulo).padStart(6, " ")})
+
+TOTAL DE VOTOS     : ${String(total).padStart(4, " ")} (100.0%)
+SITUAÇÃO           : ${situacaoBU}
+--------------------------------------------------------
+ASSINATURA DA MESA: ____________________________________
+                [FIM DO BOLETIM DE URNA]`;
+
+      document.getElementById("buTextoTerminal").innerText = buTexto;
+    }
+
+    function alternarAccordion() {
+      const content = document.getElementById("accContent");
+      const arrow = document.getElementById("accArrow");
+      if (content.style.display === "flex") {
+        content.style.display = "none";
+        arrow.innerText = "▼";
+      } else {
+        content.style.display = "flex";
+        arrow.innerText = "▲";
+      }
+    }
+
+    function salvarPersonalizacao() {
+      chapas["10"].nome = document.getElementById("editNomeC10").value.trim() || chapas["10"].nome;
+      chapas["10"].lideranca = document.getElementById("editPresC10").value.trim() || chapas["10"].lideranca;
+      chapas["10"].slogan = document.getElementById("editSloganC10").value.trim() || chapas["10"].slogan;
+
+      chapas["20"].nome = document.getElementById("editNomeC20").value.trim() || chapas["20"].nome;
+      chapas["20"].lideranca = document.getElementById("editPresC20").value.trim() || chapas["20"].lideranca;
+      chapas["20"].slogan = document.getElementById("editSloganC20").value.trim() || chapas["20"].slogan;
+
+      const payload = {
+        c10Nome: chapas["10"].nome,
+        c10Pres: chapas["10"].lideranca,
+        c10Slogan: chapas["10"].slogan,
+        c20Nome: chapas["20"].nome,
+        c20Pres: chapas["20"].lideranca,
+        c20Slogan: chapas["20"].slogan
+      };
+      try { localStorage.setItem(STORAGE_KEY_CONFIG, JSON.stringify(payload)); } catch (e) {}
+
+      atualizarPainelMesario();
+      renderizarTela();
+      dialogo("Alterações salvas com sucesso!");
+    }
+
+    async function zerarUrnaSegura() {
+      if (!(await dialogo("Atenção: Tem certeza de que deseja ZERAR todos os votos desta urna?", { cancel: true }))) return;
+      const conf = await dialogo("Digite ZERAR para emitir a Zerésima:", { input: true, cancel: true });
+      if (conf === null) return;
+      if (conf.trim().toUpperCase() !== "ZERAR") {
+        await dialogo("Texto incorreto. A urna NÃO foi zerada. Digite a palavra ZERAR para confirmar.");
+        return;
+      }
+      {
+        votosMemoria = null;
+        try { localStorage.removeItem(STORAGE_KEY_VOTOS); } catch (e) {}
+        atualizarPainelMesario();
+        await dialogo("Urna zerada com sucesso! Emitida a Zerésima.");
+      }
+    }
+
+    /* =========================================================================
+       6. DOWNLOAD DO ARQUIVO HTML COMPLETO
+       ========================================================================= */
+    async function baixarArquivoUrna() {
+      const nome = "urna_doroty_david_muzel.html";
+      const codigoCompleto = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
+      const blob = new Blob([codigoCompleto], { type: "text/html;charset=utf-8" });
+
+      // No celular, a folha de compartilhamento é o caminho mais confiável
+      try {
+        const arquivo = new File([blob], nome, { type: "text/html" });
+        if (navigator.canShare && navigator.canShare({ files: [arquivo] })) {
+          await navigator.share({ files: [arquivo], title: "Urna Eletrônica" });
+          return;
+        }
+      } catch (e) {
+        if (e && e.name === "AbortError") return;
+      }
+
+      const link = document.createElement("a");
+      const url = URL.createObjectURL(blob);
+      link.href = url;
+      link.download = nome;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      setTimeout(() => URL.revokeObjectURL(url), 1500);
+    }
+
+    /* =========================================================================
+       7. SUPORTE AO TECLADO FÍSICO DO NOTEBOOK / DESKTOP
+       ========================================================================= */
+    window.addEventListener("keydown", (e) => {
+      const painelAberto = document.getElementById("modalMesario").style.display === "flex";
+      if (dialogoAberto || painelAberto) return;
+      if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) {
+        return;
+      }
+
+      getAudioCtx();
+
+      if (e.key >= "0" && e.key <= "9") {
+        e.preventDefault();
+        digitarNumero(e.key);
+        return;
+      }
+
+      if (e.key === "Enter") {
+        e.preventDefault();
+        confirmarVoto();
+        return;
+      }
+
+      if (e.key === "Backspace" || e.key === "Delete" || e.key === "Escape") {
+        e.preventDefault();
+        corrigirVoto();
+        return;
+      }
+
+      if (e.key === " " || e.code === "Space") {
+        e.preventDefault();
+        votarBranco();
+        return;
+      }
+
+      if (e.ctrlKey && e.altKey && (e.key === "a" || e.key === "A")) {
+        e.preventDefault();
+        solicitarAcessoMesario();
+      }
+    });
+
+    // Iniciar
+    carregarConfiguracao();
+    renderizarTela();
+  </script>
+
+</body></html>
